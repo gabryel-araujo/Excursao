@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
@@ -93,7 +94,6 @@ public class InterfaceExcursao {
 				try {
 					alertas.setText("");
 					codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o código da excursão"));
-					excursao.carregar();
 					preco = Double.parseDouble(JOptionPane.showInputDialog("Insira o preço dessa excursão"));
 					max = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade máxima de reservas "));
 					excursao = new Excursao(codigo, preco, max);
@@ -125,6 +125,7 @@ public class InterfaceExcursao {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					alertas.setText("");
+					textArea.setText("");
 					codigo = Integer.parseInt(JOptionPane.showInputDialog("Digite o código"));
 					excursao = new Excursao(codigo);
 					alertas.setForeground(new Color(0, 128, 64));
@@ -132,13 +133,22 @@ public class InterfaceExcursao {
 					ativarBotoes();
 					String novoValor = excursao.calcularValorTotal() + "";
 					v_total.setText(novoValor);
+					ArrayList<String> listaNome = excursao.listarReservasPorNome("");
+					for (String s : listaNome)
+						textArea.append(s + "\n");
+					System.out.println(listaNome.size());
+
 				} catch (NullPointerException NPE) {
 					;
 				} catch (NumberFormatException NFE) {
 					alertas.setForeground(new Color(230, 0, 0));
 					alertas.setText("Digite um valor válido!");
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
+				} catch(NoSuchElementException NSEE) {
+					alertas.setForeground(new Color(230, 0, 0));
+					alertas.setText("Não foi encontrada excursão com o código " + codigo);
+				}
+				catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, ex);
 				}
 			}
 		});

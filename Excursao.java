@@ -24,6 +24,7 @@ public class Excursao {
 		if(codigo <=0)
 			throw new Exception("O valor deve ser maior que 0!");
 		this.codigo = codigo;
+		this.carregar();
 	}
 
 	public void criarReserva(String cpf, String nome) throws Exception {
