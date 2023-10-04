@@ -93,24 +93,33 @@ public class InterfaceExcursao {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					alertas.setText("");
-					codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o código da excursão"));
-					preco = Double.parseDouble(JOptionPane.showInputDialog("Insira o preço dessa excursão"));
-					max = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade máxima de reservas "));
+					String codigoTemp = JOptionPane.showInputDialog("Insira o código da excursão");
+					if (codigoTemp.equals(null))
+						return;
+					codigo = Integer.parseInt(codigoTemp);
+					String precoTemp = JOptionPane.showInputDialog("Insira o preço dessa excursão");
+					if (precoTemp.equals(null))
+						return;
+					preco = Double.parseDouble(precoTemp);
+					String maxTemp = JOptionPane.showInputDialog("Digite a quantidade máxima de reservas ");
+					if (maxTemp.equals(null))
+						return;
+					max = Integer.parseInt(maxTemp);
 					excursao = new Excursao(codigo, preco, max);
 					alertas.setForeground(new Color(0, 128, 64));
 					alertas.setText("Excursão criada com sucesso!");
 					ativarBotoes();
-					excursao.gravar();
 					String novoValor = excursao.calcularValorTotal() + "";
 					v_total.setText("R$" + novoValor);
+					listaGeral();
+
 				} catch (NullPointerException NPE) {
 					;
 
 				} catch (NumberFormatException NFE) {
-					if (codigo == 0 || preco == 0 || max == 0)
-						return;
 					alertas.setForeground(new Color(230, 0, 0));
 					alertas.setText("Digite um valor válido!");
+
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage());
 				}
@@ -126,29 +135,29 @@ public class InterfaceExcursao {
 				try {
 					alertas.setText("");
 					textArea.setText("");
-					codigo = Integer.parseInt(JOptionPane.showInputDialog("Digite o código"));
+					String codigoTemp = JOptionPane.showInputDialog("Digite o código");
+					if (codigoTemp.equals(null))
+						return;
+					codigo = Integer.parseInt(codigoTemp);
 					excursao = new Excursao(codigo);
 					alertas.setForeground(new Color(0, 128, 64));
 					alertas.setText("Excursão carregada com sucesso!");
+					excursao.carregar();
 					ativarBotoes();
 					String novoValor = excursao.calcularValorTotal() + "";
 					v_total.setText(novoValor);
-					ArrayList<String> listaNome = excursao.listarReservasPorNome("");
-					for (String s : listaNome)
-						textArea.append(s + "\n");
-					System.out.println(listaNome.size());
+					listaGeral();
 
 				} catch (NullPointerException NPE) {
 					;
 				} catch (NumberFormatException NFE) {
 					alertas.setForeground(new Color(230, 0, 0));
 					alertas.setText("Digite um valor válido!");
-				} catch(NoSuchElementException NSEE) {
+				} catch (NoSuchElementException NSEE) {
 					alertas.setForeground(new Color(230, 0, 0));
 					alertas.setText("Não foi encontrada excursão com o código " + codigo);
-				}
-				catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex);
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage());
 				}
 			}
 		});
