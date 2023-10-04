@@ -18,22 +18,21 @@ public class Excursao {
 		this.codigo = codigo;
 		this.preco = preco;
 		this.max = max;
-		
+
 		try {
-		this.carregar();
-		
+			this.carregar();
+
+		} catch (Exception e) {
+			this.gravar();
 		}
-		catch(Exception e){
-		this.gravar();
-		}
-		
+
 	}
 
-	public Excursao(int codigo)throws Exception {
-		if(codigo <=0)
+	public Excursao(int codigo) throws Exception {
+		if (codigo <= 0)
 			throw new Exception("O valor deve ser maior que 0!");
 		this.codigo = codigo;
-		
+
 	}
 
 	public void criarReserva(String cpf, String nome) throws Exception {
@@ -110,27 +109,18 @@ public class Excursao {
 	}
 
 	public void carregar() throws Exception {
-		try {
-			File f = new File(new File(".\\" + codigo + ".txt").getCanonicalPath()); // pasta do projeto
-			// System.out.println(f.getAbsolutePath()); //ver caminho do S.O.
-			Scanner arquivo = new Scanner(f);
-			String linha, reserva;
-			String[] partes;
-			preco = Double.parseDouble(arquivo.nextLine().substring(7)); // primeira linha de cabecalho é descartada
-			max = Integer.parseInt(arquivo.nextLine().substring(5));
-			arquivo.nextLine();
-			arquivo.nextLine();
-			while (arquivo.hasNextLine()) {
-				linha = arquivo.nextLine(); // leitura de uma linha
-//				partes = linha.split("/"); // separa os campos da linha
-//				reserva = partes[0]; // PARAMOS AQUI
-				reservas.add(linha); // coloca a reserva na lista de reservas principal.
-			}
-		} catch (FileNotFoundException e) {
-			// criar arquivo vazio se o arquivo nao existir
-			File f = new File(new File(".\\" + codigo + ".txt").getCanonicalPath()); // pasta do projeto
-			FileWriter arquivo2 = new FileWriter(f, false); // append=false apaga todo conteudo
-			arquivo2.close();
+		File f = new File(new File(".\\" + codigo + ".txt").getCanonicalPath()); // pasta do projeto
+		// System.out.println(f.getAbsolutePath()); //ver caminho do S.O.
+		Scanner arquivo = new Scanner(f);
+		String linha, reserva;
+		String[] partes;
+		preco = Double.parseDouble(arquivo.nextLine().substring(7)); // primeira linha de cabecalho é descartada
+		max = Integer.parseInt(arquivo.nextLine().substring(5));
+		arquivo.nextLine();
+		arquivo.nextLine();
+		while (arquivo.hasNextLine()) {
+			linha = arquivo.nextLine(); // leitura de uma linha
+			reservas.add(linha); // coloca a reserva na lista de reservas principal.
 		}
 	}
 
@@ -139,15 +129,15 @@ public class Excursao {
 		try {
 			File f = new File(new File(".\\" + codigo + ".txt").getCanonicalPath()); // pasta do projeto
 			FileWriter arquivo = new FileWriter(f, false); // append=false apaga o conteudo anterior
-			arquivo.write("Preço: " + preco + "\n" + "Max: " + max + "\n" + "\n" + "Reservas:"  + "\n"); // grava
+			arquivo.write("Preço: " + preco + "\n" + "Max: " + max + "\n" + "\n" + "Reservas:" + "\n"); // grava
 																										// primeira
 																										// linha
 																										// de cabecalho
 			String reserva;
 			for (int i = 0; i < reservas.size(); i++) {
-					reserva = reservas.get(i);
-					arquivo.write(reserva + "\n");
-				}
+				reserva = reservas.get(i);
+				arquivo.write(reserva + "\n");
+			}
 			arquivo.close();
 		} catch (IOException e) {
 			throw new Exception("problema na gravacao do arquivo de saida");

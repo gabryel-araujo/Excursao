@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
@@ -153,7 +154,7 @@ public class InterfaceExcursao {
 				} catch (NumberFormatException NFE) {
 					alertas.setForeground(new Color(230, 0, 0));
 					alertas.setText("Digite um valor válido!");
-				} catch (NoSuchElementException NSEE) {
+				} catch (FileNotFoundException FNFE) {
 					alertas.setForeground(new Color(230, 0, 0));
 					alertas.setText("Não foi encontrada excursão com o código " + codigo);
 				} catch (Exception ex) {
